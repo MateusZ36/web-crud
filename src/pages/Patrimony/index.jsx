@@ -26,7 +26,6 @@ export default function PatrimonyPage() {
 
 	const {departments, getDepartmentNameById} = useDepartments();
 	const {categories, getCategoryNameById} = useCategories();
-	let selectedCategory;
 
 	return (
 		<React.Fragment>
@@ -79,6 +78,7 @@ export default function PatrimonyPage() {
 								}
 								</tbody>
 							</Table>
+							<h4>Total de Registros:</h4>
 							<CountPatrimony />
 						</React.Fragment>
 				}

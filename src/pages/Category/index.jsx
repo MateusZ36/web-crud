@@ -70,6 +70,7 @@ export default function CategoryPage() {
                                 }
                             </tbody>
                         </Table>
+                        <h4>Total de Registros:</h4>
                         <CountCategory />
                         </React.Fragment>
                 }

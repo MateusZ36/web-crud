@@ -70,6 +70,7 @@ export default function DepartmentPage() {
                                 }
                             </tbody>
                         </Table>
+                        <h4>Total de Registros:</h4>
                         <CountDepartment />
                         </React.Fragment>
                 }

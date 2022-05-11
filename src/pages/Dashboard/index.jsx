@@ -1,7 +1,7 @@
 import React from "react";
 
 import Header from "../../components/Header";
-import {Alert, Col, Row} from "react-bootstrap";
+import {Alert} from "react-bootstrap";
 import CountDepartment from "../Department/component/CountDepartment";
 import CountPatrimony from "../Patrimony/component/CountPatrimony";
 import CountCategory from "../Category/component/CountCategory";
@@ -10,9 +10,9 @@ export default function DashboardPage() {
   return(
     <React.Fragment>
       <Header/>
-      <div className="container">
-        <Alert variant="success" className="mx-auto">
-          <Alert.Heading>Olá, seja bem vindo</Alert.Heading>
+      <div className="container mt-5">
+        <Alert variant="success">
+          <Alert.Heading>Olá, seja Bem-Vindo</Alert.Heading>
           <p>Selecione a opção desejada no menu acima.</p>
         </Alert>
 
