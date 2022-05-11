@@ -1,12 +1,18 @@
 import RoutesApp from "./routes";
 
-import DepartamentProvider from "./context/DepartamentContext";
+import DepartmentProvider from "./context/DepartmentContext";
+import PatrimonyProvider from "./context/PatrimonyContext";
+import CategoryProvider from "./context/CategoryContext";
 
 function App() {
   return (
-    <DepartamentProvider>
-      <RoutesApp />
-    </DepartamentProvider>
+    <PatrimonyProvider>
+      <CategoryProvider>
+        <DepartmentProvider>
+          <RoutesApp />
+        </DepartmentProvider>
+      </CategoryProvider>
+    </PatrimonyProvider>
   );
 }
 

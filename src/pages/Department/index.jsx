@@ -3,22 +3,22 @@ import { Button, Form, Table } from "react-bootstrap";
 
 import Header from "../../components/Header";
 import ModalForm from "../../components/ModalForm";
-import CountDepartament from "./component/CountDepartament";
+import CountDepartment from "./component/CountDepartment";
 
-import { useDepartaments } from "../../context/DepartamentContext";
+import { useDepartments } from "../../context/DepartmentContext";
 
-export default function DepartamentPage() {
+export default function DepartmentPage() {
 
-    const { departaments,
-        newDepartament,
-        editDepartament,
-        deleteDepartament,
+    const { departments,
+        newDepartment,
+        editDepartment,
+        deleteDepartment,
         showModal,
         handleCloseModal,
         handleSubmit,
-        departamentModal,
-        setDepatamentModal
-    } = useDepartaments();
+        departmentModal,
+        setDepartmentModal
+    } = useDepartments();
 
     return (
         <React.Fragment>
@@ -27,12 +27,12 @@ export default function DepartamentPage() {
             <div className="container">
                 <h2>Cadastro de Departamentos</h2>
 
-                <Button variant="secondary" onClick={newDepartament}>Novo</Button>
+                <Button variant="secondary" onClick={newDepartment}>Novo</Button>
 
                 <br /><br />
 
                 {
-                    departaments.length === 0
+                    departments.length === 0
                         ? <div className='container'>
                             <h4>Nenhum registro cadastrado</h4>
                         </div>
@@ -47,19 +47,19 @@ export default function DepartamentPage() {
                             </thead>
                             <tbody>
                                 {
-                                    departaments.map(
+                                    departments.map(
                                         departmentLoop => {
                                             return <tr key={departmentLoop.id}>
                                                 <td>{departmentLoop.id}</td>
                                                 <td>{departmentLoop.name}</td>
                                                 <td>
                                                     <Button variant="outline-secondary"
-                                                        onClick={() => editDepartament(departmentLoop)}
+                                                        onClick={() => editDepartment(departmentLoop)}
                                                     >
                                                         Editar
                                                     </Button> {' '}
                                                     <Button variant="outline-secondary"
-                                                        onClick={() => deleteDepartament(departmentLoop.id)}
+                                                        onClick={() => deleteDepartment(departmentLoop.id)}
                                                     >
                                                         Excluir
                                                     </Button>
@@ -70,7 +70,7 @@ export default function DepartamentPage() {
                                 }
                             </tbody>
                         </Table>
-                        <CountDepartament />
+                        <CountDepartment />
                         </React.Fragment>
                 }
 
@@ -85,10 +85,10 @@ export default function DepartamentPage() {
                             <Form.Control
                                 autoFocus
                                 required={true}
-                                value={departamentModal.name}
-                                onChange={e => setDepatamentModal(
+                                value={departmentModal.name}
+                                onChange={e => setDepartmentModal(
                                     {
-                                        ...departamentModal,
+                                        ...departmentModal,
                                         name: e.target.value
                                     }
                                 )}

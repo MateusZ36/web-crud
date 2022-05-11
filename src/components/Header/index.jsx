@@ -19,9 +19,9 @@ function Header() {
                     </Navbar.Toggle>
 
                     <Navbar.Collapse className="justify-content-end">
-                        <Nav.Link to="/departament" as={Link}>Departamento</Nav.Link>
-                        <Nav.Link href="#">Categorias</Nav.Link>
-                        <Nav.Link href="#">Patrimônios</Nav.Link>
+                        <Nav.Link to="/department" as={Link}>Departamento</Nav.Link>
+                        <Nav.Link to="/category" as={Link}>Categorias</Nav.Link>
+                        <Nav.Link to="/patrimony" as={Link}>Patrimônios</Nav.Link>
                         <Navbar.Text className="divisor" />
                         <Nav.Link href="/">Sair</Nav.Link>
                     </Navbar.Collapse>
