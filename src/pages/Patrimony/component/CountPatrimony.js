@@ -1,8 +1,8 @@
-import { useCategories } from "../../../context/CategoryContext"
+import {usePatrimonies} from "../../../context/PatrimonyContext";
 
 export default function CountPatrimony() {
 
-    const { categories } = useCategories();
+    const { patrimonies } = usePatrimonies();
 
-    return <h5>Total de Registros: {categories.length}</h5>
+    return <h5>{patrimonies.length}</h5>
 }

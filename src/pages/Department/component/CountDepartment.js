@@ -4,5 +4,5 @@ export default function CountDepartment() {
 
     const { departments } = useDepartments();
 
-    return <h5>Total de Registros: {departments.length}</h5>
+    return <h5>{departments.length}</h5>
 }

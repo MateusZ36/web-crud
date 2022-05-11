@@ -1,8 +1,8 @@
-import { useDepartments } from "../../../context/DepartmentContext"
+import {useCategories} from "../../../context/CategoryContext";
 
 export default function CountCategory() {
 
-    const { departments } = useDepartments();
+    const { categories } = useCategories();
 
-    return <h5>Total de Registros: {departments.length}</h5>
+    return <h5>{categories.length}</h5>
 }
