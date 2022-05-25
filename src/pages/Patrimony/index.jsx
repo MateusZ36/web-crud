@@ -61,8 +61,8 @@ export default function PatrimonyPage() {
 												<td>{patrimonyLoop.name}</td>
 												<td>{patrimonyLoop.description}</td>
 												<td>{patrimonyLoop.price}</td>
-												<td>{patrimonyLoop.departament.name}</td>
-												<td>{patrimonyLoop.categories.map(c=><li>{c.name}</li>)}</td>
+												<td>{departments.find(department => department.id === patrimonyLoop.departament.id).name}</td>
+												<td>{patrimonyLoop.categories.map(c=><li key={c.id}>{categories.find(cat => cat.id === c.id).name}</li>)}</td>
 												<td>
 													<Button variant="outline-secondary" onClick={() => editPatrimony(patrimonyLoop)}>
 														Editar
