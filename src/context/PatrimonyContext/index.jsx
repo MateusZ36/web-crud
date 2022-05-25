@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext} from 'react';
+import axios from 'axios';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const PatrimonyContext = createContext();
 
@@ -6,8 +7,18 @@ export default function PatrimonyProvider({children}){
 
 	const [patrimonies, setPatrimonies] = useState([]);
 
+	useEffect(
+		() => {
+			axios.get('http://localhost:8080/patrimony/all').then(
+				response => {
+					setPatrimonies(response.data)
+				}
+			)
+		}, []
+	)
+
 	const [patrimonyModal, setPatrimonyModal] = useState(
-		{ id: -1, name: '', description: "", price: 0, department: null, categories: []}
+		{ id: -1, name: '', price: 0, categories: [], departament: null }
 	)
 
 	const [showModal, setShowModal] = useState(false);
@@ -18,7 +29,7 @@ export default function PatrimonyProvider({children}){
 
 	function newPatrimony() {
 		setTypeCrud('NEW');
-		setPatrimonyModal({ id: -1, name: '', description: "", price: 0, department: null, categories:[]});
+		setPatrimonyModal({ id: -1, name: '', price: 0, categories: [], departament: null });
 		handleShowModal();
 	}
 
@@ -31,6 +42,8 @@ export default function PatrimonyProvider({children}){
 	function deletePatrimony(id) {
 		let confirmDelete = window.confirm('Confirma a exclusão do ítem?');
 		if (confirmDelete) {
+			axios.delete(`http://localhost:8080/patrimony/${id}`);
+
 			let novaLista = patrimonies.filter(item => item.id !== id);
 
 			setPatrimonies([
@@ -40,24 +53,19 @@ export default function PatrimonyProvider({children}){
 	}
 
 	function handleSubmit(event) {
-		console.log(patrimonyModal);
+
 		if (typeCrud === 'NEW') {
-			let lastId = 0;
-			if (patrimonies.length > 0) {
-				lastId = patrimonies[patrimonies.length - 1].id;
-			}
-			setPatrimonies([
-				...patrimonies,
-				{
-					id: lastId + 1,
-					name: patrimonyModal.name,
-					description: patrimonyModal.description,
-					price: patrimonyModal.price,
-					department: patrimonyModal.department,
-					categories: patrimonyModal.categories
+			axios.post('http://localhost:8080/patrimony', patrimonyModal).then(
+				response => {
+					setPatrimonies([
+						...patrimonies,
+						response.data
+					])
 				}
-			]);
+			)
 		} else {
+			axios.put(`http://localhost:8080/patrimony/${patrimonyModal.id}`,
+				patrimonyModal);
 			let patrimoniesList = patrimonies;
 			for (let index = 0; index < patrimonies.length; index++) {
 				const element = patrimonies[index];

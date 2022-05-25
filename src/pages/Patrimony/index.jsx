@@ -24,8 +24,8 @@ export default function PatrimonyPage() {
 		setPatrimonyModal
 	} = usePatrimonies();
 
-	const {departments, getDepartmentNameById} = useDepartments();
-	const {categories, getCategoryNameById} = useCategories();
+	const {departments} = useDepartments();
+	const {categories} = useCategories();
 
 	return (
 		<React.Fragment>
@@ -61,8 +61,8 @@ export default function PatrimonyPage() {
 												<td>{patrimonyLoop.name}</td>
 												<td>{patrimonyLoop.description}</td>
 												<td>{patrimonyLoop.price}</td>
-												<td>{getDepartmentNameById(parseInt(patrimonyLoop.department))}</td>
-												<td>{patrimonyLoop.categories.map(c=><li>{getCategoryNameById(parseInt(c.id))}</li>)}</td>
+												<td>{patrimonyLoop.departament.name}</td>
+												<td>{patrimonyLoop.categories.map(c=><li>{c.name}</li>)}</td>
 												<td>
 													<Button variant="outline-secondary" onClick={() => editPatrimony(patrimonyLoop)}>
 														Editar
@@ -132,18 +132,32 @@ export default function PatrimonyPage() {
 							</Col>
 							<Col>
 								<Form.Label>Departamento</Form.Label>
-								<Form.Select
-									required={true}
-									value={patrimonyModal.department}
-									onChange={e => setPatrimonyModal(
-										{
-											...patrimonyModal,
-											department: e.target.value
-									})}
-								>
-									<option value="">Departamento</option>
-									{departments.map(d=>{return <option value={d.id}>{d.name}</option>})}
-								</Form.Select>
+							<Select
+								required={true}
+								placeholder="Selecione o departamento"
+	              color="brown"
+	              searchBy="name"
+	              clearable={true}
+	              searchable={true}
+	              create={false}
+	              keepOpen={false}
+	              multi={false}
+	              values={[patrimonyModal.departament]}
+	              labelField="name"
+	              valueField="id"
+	              options={departments}
+								keepSelectedInList={false}
+	              onChange={e => {
+									setPatrimonyModal(
+			              {
+				              ...patrimonyModal,
+				              departament: e[0]
+			              }
+		              )
+	              }
+	              }
+	              noDataLabel="Nenhum departamento encontrado"
+							/>
 							</Col>
 							</Row>
 							<hr/>
@@ -151,17 +165,17 @@ export default function PatrimonyPage() {
 							<Form.Label>Categoria</Form.Label>
 							<Select
 								required={true}
-								placeholder="Selecione as categorias"
-	              color={"brown"}
-	              searchBy={"name"}
+								placeholder="Selecione as Categorias"
+	              color="brown"
+	              searchBy="name"
 	              clearable={true}
 	              searchable={true}
 	              create={false}
 	              keepOpen={false}
 	              multi={true}
 	              values={patrimonyModal.categories}
-	              labelField={"name"}
-	              valueField={"id"}
+	              labelField="name"
+	              valueField="id"
 	              options={categories}
 								keepSelectedInList={false}
 	              onChange={e => {

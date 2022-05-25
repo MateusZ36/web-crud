@@ -1,10 +1,23 @@
-import React, { createContext, useState, useContext} from 'react';
+import axios from 'axios';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import {toast} from "react-toastify";
 
 const DepartmentContext = createContext();
 
 export default function DepartmentProvider({children}){
 
 	const [departments, setDepartments] = useState([]);
+
+	useEffect(
+		() => {
+			axios.get('http://localhost:8080/departament/all').then(
+				response => {
+					setDepartments(response.data)
+				}
+			)
+		}, []
+	)
+
 	const [departmentModal, setDepartmentModal] = useState(
 		{ id: -1, name: '' }
 	)
@@ -30,28 +43,30 @@ export default function DepartmentProvider({children}){
 	function deleteDepartment(id) {
 		let confirmDelete = window.confirm('Confirma a exclusão do ítem?');
 		if (confirmDelete) {
-			let novaLista = departments.filter(item => item.id !== id);
-			setDepartments([
-				...novaLista
-			])
+			axios.delete(`http://localhost:8080/departament/${id}`).then(
+				()=>{
+					setDepartments([...departments.filter(item => item.id !== id)])
+				}
+			).catch(
+				e=>toast.error(JSON.parse(e.request.response).message, )
+			);
 		}
 	}
 
 	function handleSubmit(event) {
 
 		if (typeCrud === 'NEW') {
-			let lastId = 0;
-			if (departments.length > 0) {
-				lastId = departments[departments.length - 1].id;
-			}
-			setDepartments([
-				...departments,
-				{
-					id: lastId + 1,
-					name: departmentModal.name
+			axios.post('http://localhost:8080/departament', departmentModal).then(
+				response => {
+					setDepartments([
+						...departments,
+						response.data
+					])
 				}
-			]);
+			)
 		} else {
+			axios.put(`http://localhost:8080/departament/${departmentModal.id}`,
+				departmentModal);
 			let departmentsList = departments;
 			for (let index = 0; index < departments.length; index++) {
 				const element = departments[index];
@@ -67,11 +82,6 @@ export default function DepartmentProvider({children}){
 		event.preventDefault();
 	}
 
-	function getDepartmentNameById(id) {
-		let filteredDepartments = departments.filter(d => d.id === id)
-		return filteredDepartments.length>0?filteredDepartments[0].name:null;
-	}
-
 	return (
 		<DepartmentContext.Provider value={{
 			departments,
@@ -83,8 +93,7 @@ export default function DepartmentProvider({children}){
 			handleCloseModal,
 			handleSubmit,
 			departmentModal,
-			setDepartmentModal,
-			getDepartmentNameById
+			setDepartmentModal
 		}}>
 			{children}
 		</DepartmentContext.Provider>
@@ -103,8 +112,7 @@ export function useDepartments(){
 		handleCloseModal,
 		handleSubmit,
 		departmentModal,
-		setDepartmentModal,
-		getDepartmentNameById
+		setDepartmentModal
 	} = context;
 	return {
 		departments,
@@ -116,7 +124,6 @@ export function useDepartments(){
 		handleCloseModal,
 		handleSubmit,
 		departmentModal,
-		setDepartmentModal,
-		getDepartmentNameById
+		setDepartmentModal
 	};
 }

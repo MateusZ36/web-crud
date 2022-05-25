@@ -1,10 +1,22 @@
-import React, { createContext, useState, useContext} from 'react';
+import axios from 'axios';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import {toast} from "react-toastify";
 
 const CategoryContext = createContext();
 
 export default function CategoryProvider({children}){
 
 	const [categories, setCategories] = useState([]);
+
+	useEffect(
+		() => {
+			axios.get('http://localhost:8080/category/all').then(
+				response => {
+					setCategories(response.data)
+				}
+			)
+		}, []
+	)
 
 	const [categoryModal, setCategoryModal] = useState(
 		{ id: -1, name: '' }
@@ -31,28 +43,28 @@ export default function CategoryProvider({children}){
 	function deleteCategory(id) {
 		let confirmDelete = window.confirm('Confirma a exclusão do ítem?');
 		if (confirmDelete) {
-			let novaLista = categories.filter(item => item.id !== id);
-
-			setCategories([
-				...novaLista
-			])
+			axios.delete(`http://localhost:8080/category/${id}`).then(
+				()=>{
+					setCategories([...categories.filter(item => item.id !== id)])
+				}
+			).catch(
+				e=>toast.error(JSON.parse(e.request.response).message, ));
 		}
 	}
 
 	function handleSubmit(event) {
 		if (typeCrud === 'NEW') {
-			let lastId = 0;
-			if (categories.length > 0) {
-				lastId = categories[categories.length - 1].id;
-			}
-			setCategories([
-				...categories,
-				{
-					id: lastId + 1,
-					name: categoryModal.name
+			axios.post('http://localhost:8080/category', categoryModal).then(
+				response => {
+					setCategories([
+						...categories,
+						response.data
+					])
 				}
-			]);
+			)
 		} else {
+			axios.put(`http://localhost:8080/category/${categoryModal.id}`,
+				categoryModal);
 			let categoriesList = categories;
 			for (let index = 0; index < categories.length; index++) {
 				const element = categories[index];
@@ -68,11 +80,6 @@ export default function CategoryProvider({children}){
 		event.preventDefault();
 	}
 
-	function getCategoryNameById(id) {
-		let filteredCategories = categories.filter(d => d.id === id)
-		return filteredCategories.length>0?filteredCategories[0].name:null;
-	}
-
 	return (
 		<CategoryContext.Provider value={{
 			categories,
@@ -84,8 +91,7 @@ export default function CategoryProvider({children}){
 			handleCloseModal,
 			handleSubmit,
 			categoryModal,
-			setCategoryModal,
-			getCategoryNameById
+			setCategoryModal
 		}}>
 			{children}
 		</CategoryContext.Provider>
@@ -104,8 +110,7 @@ export function useCategories(){
 		handleCloseModal,
 		handleSubmit,
 		categoryModal,
-		setCategoryModal,
-		getCategoryNameById
+		setCategoryModal
 	} = context;
 	return {
 		categories,
@@ -117,7 +122,6 @@ export function useCategories(){
 		handleCloseModal,
 		handleSubmit,
 		categoryModal,
-		setCategoryModal,
-		getCategoryNameById
+		setCategoryModal
 	};
 }
