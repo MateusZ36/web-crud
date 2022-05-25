@@ -142,7 +142,7 @@ export default function PatrimonyPage() {
 	              create={false}
 	              keepOpen={false}
 	              multi={false}
-	              values={[patrimonyModal.departament]}
+	              values={patrimonyModal.departament?[patrimonyModal.departament]:[]}
 	              labelField="name"
 	              valueField="id"
 	              options={departments}

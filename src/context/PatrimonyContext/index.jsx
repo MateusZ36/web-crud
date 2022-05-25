@@ -17,9 +17,9 @@ export default function PatrimonyProvider({children}){
 		}, []
 	)
 
-	const [patrimonyModal, setPatrimonyModal] = useState(
-		{ id: -1, name: '', price: 0, categories: [], departament: null }
-	)
+	const initialState = { id: -1, name: '', price: 0, categories: [], departament: null}
+
+	const [patrimonyModal, setPatrimonyModal] = useState(initialState)
 
 	const [showModal, setShowModal] = useState(false);
 	const handleShowModal = () => setShowModal(true);
@@ -29,7 +29,7 @@ export default function PatrimonyProvider({children}){
 
 	function newPatrimony() {
 		setTypeCrud('NEW');
-		setPatrimonyModal({ id: -1, name: '', price: 0, categories: [], departament: null });
+		setPatrimonyModal(initialState);
 		handleShowModal();
 	}
 
